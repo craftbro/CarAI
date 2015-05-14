@@ -1,12 +1,13 @@
 package Main;
 
 import java.awt.Dimension;
+
 import java.awt.Toolkit;
 
 import API.GameState;
 import API.GameStateManager;
 import API.MainClass;
-import States.InitState;
+import States.MainState;
 
 public class Main extends MainClass{
 
@@ -28,7 +29,7 @@ public class Main extends MainClass{
 
 	@Override
 	protected GameState getInitState(GameStateManager gsm) {
-		return new InitState(gsm);
+		return new MainState(gsm);
 	}
 
 }

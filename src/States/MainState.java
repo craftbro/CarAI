@@ -1,29 +1,34 @@
 package States;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 
 import API.GameState;
 import API.GameStateManager;
 import API.MainClass;
-import Main.Main;
+import World.Camera;
+import World.World;
 
-public class InitState extends GameState{
+public class MainState extends GameState{
+	
+	private World world;
+	private Camera camera;
 
-	public InitState(GameStateManager gsm) {
+	public MainState(GameStateManager gsm) {
 		super(gsm);
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
-		g.setColor(Color.RED);
-		g.fillRect(0, 0, MainClass.WIDTH, MainClass.HEIGHT);
+		BufferedImage img = world.draw();
+		g.drawImage(img, 0, 0, img.getWidth(), img.getHeight(), null);
 	}
 
 	@Override
 	public void init() {
-		
+		world = new World(MainClass.WIDTH, MainClass.HEIGHT);
+		camera = new Camera();
 	}
 
 	@Override
@@ -40,7 +45,8 @@ public class InitState extends GameState{
 
 	@Override
 	public void update() {
-		
+		camera.update();
+		world.scale = camera.getScale();
 	}
 
 }
