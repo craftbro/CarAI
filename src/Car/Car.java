@@ -8,11 +8,9 @@ import java.lang.Math;
 public class Car {
 	Random r = new Random();
 	int rotation = 0;
-	double hSpeed = 0;
-	double vSpeed = 0;
-	double speed = Math.sqrt(vSpeed*vSpeed + hSpeed*hSpeed);
-	static double cwValue = 0.38;
-	static int frontArea = 4;
+	double speed = 0;
+	double cwValue = r.nextDouble()*0.2+0.2;
+	int frontArea = 4;
 	double maxAcceleration = r.nextDouble()+1*10;
 	double standardAcceleration = 0;
 	int mass = r.nextInt(400)+800;
@@ -33,5 +31,12 @@ public class Car {
 	 */
 	public void setNewSpeed(){
 		this.speed += acceleration();
+	}
+	public void toggleAcceleration(){
+		standardAcceleration = standardAcceleration == 0? maxAcceleration: 0;
+	}
+	public void steer(byte direction){
+		rotation += direction;
+		
 	}
 }
