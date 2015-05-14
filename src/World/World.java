@@ -7,6 +7,7 @@ import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 import java.util.List;
 
+import Car.Car;
 import Util.ImageLoader;
 
 public class World {
@@ -15,7 +16,7 @@ public class World {
 	BufferedImage worldImage;
 	Color backgroundColor = new Color(233, 203, 52);
 	
-	List<Integer> cars = new ArrayList<Integer>();
+	List<Car> cars = new ArrayList<Car>();
 	
 	int WIDTH, HEIGHT = 0;
 	
@@ -28,6 +29,8 @@ public class World {
 		
 		//setup the background
 		this.setupBackground();
+		
+		cars.add(new Car());
 	}
 	
 	/**
@@ -49,10 +52,11 @@ public class World {
 		Graphics2D g = (Graphics2D) worldImage.getGraphics();
 		
 		g.drawImage(backgroundImage, 0, 0, null);
-		
-		
-		//TODO draw cars
-		for(int c : cars){}
+
+		for(Car c : cars){
+			c.draw(g, scale, xOffset, yOffset);
+		}
+	
 		
 		try{
 			BufferedImage car = ImageLoader.loadImage("car.png");
@@ -60,7 +64,7 @@ public class World {
 			int sizeH = (int) (car.getHeight()/(50/scale));
 			g.drawImage(car, (int)(((WIDTH/2)-(sizeW/2))+xOffset), (int)(((HEIGHT/2)-(sizeH/2))+yOffset), sizeW, sizeH, null);
 		}
-		catch(Exception e){}
+		catch(Exception e){ System.out.println("boe");}
 		
 		return worldImage;
 	}
