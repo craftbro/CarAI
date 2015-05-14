@@ -9,7 +9,7 @@ public class Car {
 	int x = 600;
 	int y = 600;
 	Random r = new Random();
-	int rotation = 1;
+	double rotation = 0;
 	double speed = 0;
 	double cwValue = r.nextDouble()*0.2+0.2;
 	int frontArea = 4;
@@ -38,31 +38,31 @@ public class Car {
 		standardAcceleration = standardAcceleration == 0? maxAcceleration: 0;
 	}
 	public void steer(byte direction){
-		if(rotation + direction < 1){
-			rotation = 360;
+		if(rotation + direction/180*Math.PI < 1/180*Math.PI){
+			rotation = 2*Math.PI;
 			
-		}else if(rotation + direction > 360){
-			rotation = 1;
+		}else if(rotation + direction/180*Math.PI > Math.PI*2){
+			rotation = 1/180*Math.PI;
 			
 		}else{
-			rotation += direction;
+			rotation += direction/180*Math.PI;
 		}
 		
 		
 	}
 	public void move(double speed, int rotation){
-		if(rotation <= 90){
+		if(rotation <= Math.PI*0.5){
 			x += (int) (Math.sin(rotation)*speed);
 			y += (int) (Math.cos(rotation)*speed);
-		}else if(90 < rotation && rotation <= 180){
-			x += (int) (Math.cos(rotation - 90)*speed);
-			y -= (int) (Math.sin(rotation - 90)*speed);
-		}else if(180 < rotation && rotation <= 270){
-			x -= (int) (Math.sin(rotation - 180)*speed);
-			y -= (int) (Math.cos(rotation - 180)*speed);
-		}else if(270 < rotation && rotation <= 360){
-			x -= (int) (Math.cos(rotation - 270)*speed);
-			y += (int) (Math.sin(rotation - 270)*speed);
+		}else if(Math.PI*0.5 < rotation && rotation <= Math.PI){
+			x += (int) (Math.cos(rotation - Math.PI*0.5)*speed);
+			y -= (int) (Math.sin(rotation - Math.PI*0.5)*speed);
+		}else if(Math.PI < rotation && rotation <= Math.PI*1.5){
+			x -= (int) (Math.sin(rotation - Math.PI)*speed);
+			y -= (int) (Math.cos(rotation - Math.PI)*speed);
+		}else if(Math.PI*1.5 < rotation && rotation <= Math.PI*2){
+			x -= (int) (Math.cos(rotation - Math.PI*1.5)*speed);
+			y += (int) (Math.sin(rotation - Math.PI*1.5)*speed);
 		}
 		
 	}
