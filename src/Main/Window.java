@@ -10,7 +10,7 @@ public class Window {
 	        .getLocalGraphicsEnvironment().getScreenDevices()[0];
 
 	public static void main(String[] args){
-		JFrame frame = new JFrame("TicTacToe");
+		JFrame frame = new JFrame("CarAI");
 		Main panel = new Main();
 
 		
