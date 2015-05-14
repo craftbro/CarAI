@@ -53,6 +53,13 @@ public class Car {
 	public void toggleAcceleration(){
 		standardAcceleration = standardAcceleration == 0? maxAcceleration: 0;
 	}
+	public void breaks(){
+		if(speed - 30 < 0){
+			speed = 0;
+		}else{
+			speed -= 30;
+		}
+	}
 	/**
 	 * changes the rotation based on -1, 0 and +1
 	 * @param direction
