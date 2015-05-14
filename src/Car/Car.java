@@ -6,8 +6,10 @@ import java.lang.Math;
  * Car class with all condition and changing of them
  */
 public class Car {
+	int x = 600;
+	int y = 600;
 	Random r = new Random();
-	int rotation = 0;
+	int rotation = 1;
 	double speed = 0;
 	double cwValue = r.nextDouble()*0.2+0.2;
 	int frontArea = 4;
@@ -36,7 +38,32 @@ public class Car {
 		standardAcceleration = standardAcceleration == 0? maxAcceleration: 0;
 	}
 	public void steer(byte direction){
-		rotation += direction;
+		if(rotation + direction < 1){
+			rotation = 360;
+			
+		}else if(rotation + direction > 360){
+			rotation = 1;
+			
+		}else{
+			rotation += direction;
+		}
+		
+		
+	}
+	public void move(double speed, int rotation){
+		if(rotation <= 90){
+			x += (int) (Math.sin(rotation)*speed);
+			y += (int) (Math.cos(rotation)*speed);
+		}else if(90 < rotation && rotation <= 180){
+			x += (int) (Math.cos(rotation - 90)*speed);
+			y -= (int) (Math.sin(rotation - 90)*speed);
+		}else if(180 < rotation && rotation <= 270){
+			x -= (int) (Math.sin(rotation - 180)*speed);
+			y -= (int) (Math.cos(rotation - 180)*speed);
+		}else if(270 < rotation && rotation <= 360){
+			x -= (int) (Math.cos(rotation - 270)*speed);
+			y += (int) (Math.sin(rotation - 270)*speed);
+		}
 		
 	}
 }

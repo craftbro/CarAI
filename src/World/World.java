@@ -60,7 +60,7 @@ public class World {
 			int sizeH = (int) (car.getHeight()/(50/scale));
 			g.drawImage(car, (int)(((WIDTH/2)-(sizeW/2))+xOffset), (int)(((HEIGHT/2)-(sizeH/2))+yOffset), sizeW, sizeH, null);
 		}
-		catch(Exception e){}
+		catch(Exception e){ System.out.println("boe");}
 		
 		return worldImage;
 	}
