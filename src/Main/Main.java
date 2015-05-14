@@ -7,7 +7,6 @@ import java.awt.Toolkit;
 import API.GameState;
 import API.GameStateManager;
 import API.MainClass;
-import States.InitState;
 import States.MainState;
 
 public class Main extends MainClass{

@@ -107,8 +107,10 @@ public class Car {
 		}
 		
 	}
+
 	public void draw(Graphics2D g, float scale, double xOffset, double yOffset) {
 		// TODO Auto-generated method stub
 		
 	}
+
 }
