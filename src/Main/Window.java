@@ -15,7 +15,7 @@ public class Window {
 
 		
 		//Setting up the window
-		frame.setUndecorated(true);
+		//frame.setUndecorated(true);
 		frame.setContentPane(panel);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,7 +24,7 @@ public class Window {
 		
 		frame.setVisible(true);
 		
-		vc.setFullScreenWindow(frame);
+		//vc.setFullScreenWindow(frame);
 	}
 	
 }

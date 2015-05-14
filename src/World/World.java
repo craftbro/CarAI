@@ -19,7 +19,7 @@ public class World {
 	
 	int WIDTH, HEIGHT = 0;
 	
-	public float scale = 1f;
+
 	
 	
 	public World(int width, int height){
@@ -44,7 +44,7 @@ public class World {
 	/**
 	 * Draws to worldImage
 	 */
-	public BufferedImage draw(){
+	public BufferedImage draw(float scale, double xOffset, double yOffset){
 		worldImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);	
 		Graphics2D g = (Graphics2D) worldImage.getGraphics();
 		
@@ -58,7 +58,7 @@ public class World {
 			BufferedImage car = ImageLoader.loadImage("car.png");
 			int sizeW = (int) (car.getWidth()/(50/scale));
 			int sizeH = (int) (car.getHeight()/(50/scale));
-			g.drawImage(car, (WIDTH/2)-(sizeW/2), (HEIGHT/2)-(sizeH/2), sizeW, sizeH, null);
+			g.drawImage(car, (int)(((WIDTH/2)-(sizeW/2))+xOffset), (int)(((HEIGHT/2)-(sizeH/2))+yOffset), sizeW, sizeH, null);
 		}
 		catch(Exception e){}
 		
