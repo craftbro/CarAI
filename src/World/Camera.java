@@ -3,6 +3,7 @@ package World;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 
+import API.MainClass;
 import Util.Mouse;
 
 public class Camera {
@@ -32,6 +33,23 @@ public class Camera {
 		return scale;
 	}
 	
+	public void update(){
+		//Make sure the zoom can't be negative
+		if(targetScale < 1){
+			targetScale = 1f;
+		}
+		if(scale < 1){
+			scale = 1f;
+		}
+		
+		//Update the current zoom
+		if(scale > targetScale){
+			scale -= .25;
+		}else if(scale < targetScale){
+			scale += .25;
+		}
+	}
+	
 	/**
 	 * 
 	 * @return The current x offset
@@ -51,6 +69,15 @@ public class Camera {
 	public void onPress(){
 		currentMouseLocation = (Point2D) Mouse.getMouseLocation().clone();
 	}
+	
+	public Point getRelativePointerLocation(){
+		Point p = Mouse.getMouseLocation();
+		int x = (int) ((xOffset+p.getX())/(scale));
+		int y = (int) ((yOffset+p.getY())/(scale));
+		return new Point(x, y);
+	}
+	
+	
 
 	
 	/**
@@ -62,11 +89,11 @@ public class Camera {
 		
 		
 		if(loc.getX() != currentMouseLocation.getX()){
-			xOffset -= currentMouseLocation.getX() - loc.getX();
+			xOffset -= (currentMouseLocation.getX() - loc.getX())/scale;
 		}
 		
 		if(loc.getY() != currentMouseLocation.getY()){
-			yOffset -= currentMouseLocation.getY() - loc.getY();
+			yOffset -= (currentMouseLocation.getY() - loc.getY())/scale;
 		}
 		
 		
@@ -79,27 +106,33 @@ public class Camera {
 	 */
 	public void updateScale(){
 		
+		
+		
 		//Check if the user has scrolled. If so, zoom in
 		double scroll = Mouse.getScrollPosition();
 		if(scroll != currentWheelRotation){
+			double xAdd = this.getRelativePointerLocation().getX();
+			double yAdd = this.getRelativePointerLocation().getY();
+			
+			if(scroll > currentWheelRotation){
+				xAdd = -xAdd;
+				yAdd = -yAdd;
+			}
+			
+			xOffset += xAdd;
+			yOffset += yAdd;
+			
 			int scrollDiff = (int) (scroll - currentWheelRotation);
 			scrollDiff = scrollDiff>0?1:-1;
 			targetScale-=(.75*scrollDiff);
 			scale-=(.25*scrollDiff);
 			currentWheelRotation = scroll;
+			
+			
 		}
 		
-		//Make sure the zoom can't be negative
-		if(targetScale < 0.25){
-			targetScale = 0.25f;
-		}
-		
-		//Update the current zoom
-		if(scale > targetScale){
-			scale -= .25;
-		}else if(scale < targetScale){
-			scale += .25;
-		}
+
+	
 		
 	}
 	

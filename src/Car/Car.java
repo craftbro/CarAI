@@ -1,8 +1,9 @@
 package Car;
 
-import java.util.Random;
+import java.awt.Color;
 import java.awt.Graphics2D;
-import java.lang.Math;
+import java.awt.Point;
+import java.util.Random;
 /** 
  * Car class with all condition and changing of them
  */
@@ -80,8 +81,12 @@ public class Car {
 	/**
 	 * Updates the current rotation
 	 */
-	public void updateRotation(){
-		this.rotation += (double)(this.direction)/2;
+	public void updateRotation(double d){
+		if(d == 0) return;
+		this.rotation += (double)(this.direction);
+		this.rotation = this.rotation%360;
+		if(this.rotation < 0) this.rotation = 360 + this.rotation;
+	
 	}
 	
 	/**
@@ -91,44 +96,37 @@ public class Car {
 	 */
 	public void move(double speed, double rotation){
 		
-		this.updateRotation();
 		
-		rotation = rotation%360;
 
+		int addX = 0;
+		int addY = 0;
 		
-		//first quadrant of rotation
-		if(rotation <= 90){
-			x += (int) (Math.sin(Math.toRadians(rotation))*speed);
-			y -= (int) (Math.cos(Math.toRadians(rotation))*speed);
-			
-		//second quadrant of rotation
-		}else if(90 < rotation && rotation <= 180){
-			x += (int) (Math.cos(Math.toRadians(rotation - 90))*speed);
-			y += (int) (Math.sin(Math.toRadians(rotation - 90))*speed);
-			
-		//third quadrant of rotation
-		}else if(180 < rotation && rotation <= 270){
-			x -= (int) (Math.sin(Math.toRadians(rotation - 180))*speed);
-			y += (int) (Math.cos(Math.toRadians(rotation - 180))*speed);
-		//fourth and last quadrant of rotation
-		}else if(270 < rotation && rotation <= 360){
-			x -= (int) (Math.cos(Math.toRadians(rotation - 270))*speed);
-			y -= (int) (Math.sin(Math.toRadians(rotation - 270))*speed);
-		}
+	
+		addX = (int) Math.round((Math.sin(Math.toRadians(rotation))*speed));
+		addY = -(int) Math.round((Math.cos(Math.toRadians(rotation))*speed));
 		
+		Point oldPos = new Point(x, y);
 		
+		x += addX;
+		y += addY;
 		
-		
+		Point newPos = new Point(x, y);
+
+		this.updateRotation(oldPos.distance(newPos));
 	}
 	
 	public void update(){
 		this.toggleAcceleration();
 		this.setNewSpeed();
-		this.steer((byte)1);
+		if(rotation != 145){
+			this.steer((byte)1);
+		}else{
+			this.steer((byte)0);
+		}
 	}
 
 	public void draw(Graphics2D g, float scale, double xOffset, double yOffset) {
-		this.move(this.speed/30, rotation);
+		this.move(this.speed/60, rotation);
 		frame.draw(g, scale, xOffset, yOffset);
 	}
 

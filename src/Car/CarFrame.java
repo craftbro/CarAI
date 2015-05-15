@@ -1,6 +1,7 @@
 package Car;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
@@ -13,7 +14,7 @@ public class CarFrame {
 	
 	Car car;
 	BufferedImage img;
-	final int SCALE = 5;
+	Dimension SCALE;
 	
 	Point[] corners = {new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0)};
 	int[] dist = {0, 0, 0, 0};
@@ -22,7 +23,8 @@ public class CarFrame {
 	public CarFrame(Car c){
 		this.car = c;
 		img = ImageLoader.loadImage("car.png");
-		this.setupDist();
+		SCALE = new Dimension(img.getWidth()/5, img.getHeight()/5);
+		//this.setupDist();
 	}
 	
 	private void setupDist(){
@@ -38,9 +40,11 @@ public class CarFrame {
 	}
 	
 	public void draw(Graphics2D g, float scale2, double xOffset, double yOffset){
-		int sizeW = (int) (img.getWidth()/(SCALE/scale2));
-		int sizeH = (int) (img.getHeight()/(SCALE/scale2));
-		drawRot(g, (int)(((car.x/2)-(sizeW/2))+xOffset), (int)(((car.y/2)-(sizeH/2))+yOffset), sizeW, sizeH);
+		int sizeW = (int) (SCALE.getWidth()*scale2);
+		int sizeH = (int) (SCALE.getHeight()*scale2);
+		int x = (int)((((car.x)-(sizeW/2))+xOffset)*scale2);
+		int y = (int)((((car.y)+(sizeH/2))+yOffset)*scale2);
+		drawRot(g, x, y, sizeW, sizeH);
 	}
 	
 	private void drawRot(Graphics2D g, int x, int y, int sizeW, int sizeH){
@@ -70,6 +74,7 @@ public class CarFrame {
 	    
 	    
 	    g.drawImage(blankCanvas, x-(sizeW/2), y-(sizeH/2), sizeW, sizeH, null);
+	
 	}
 	
 	
