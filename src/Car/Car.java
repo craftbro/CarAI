@@ -15,6 +15,7 @@ public class Car {
 	
 	//moving
 	double rotation = 0;
+	int direction = 0;
 	double speed = 0;
 	
 	//Acceleration
@@ -31,6 +32,13 @@ public class Car {
 	
 	//maximum speed on current road: Not used yet
 	int currentMaxSpeed = 120;
+	
+	//The object used for drawing the car with the right rotation
+	CarFrame frame;
+	
+	public Car(){
+		this.frame = new CarFrame(this);
+	}
 	
 	//calculate the drag
 	public double dragForce(){
@@ -62,55 +70,66 @@ public class Car {
 		}
 	}
 	/**
-	 * changes the rotation based on -1, 0 and +1
+	 * changes the direction of the wheels
 	 * @param direction
 	 */
 	public void steer(byte direction){
-		//if smaller then 1 deg, exception check
-		if(rotation + direction/180*Math.PI < 1/180*Math.PI){
-			rotation = 2*Math.PI;
-		//if greater then 360 deg, exception check	
-		}else if(rotation + direction/180*Math.PI > Math.PI*2){
-			rotation = 1/180*Math.PI;
-		//to change the rotation	
-		}else{
-			rotation += direction/180*Math.PI;
-		}
-		
-		
+		this.direction = direction;
 	}
+	
+	/**
+	 * Updates the current rotation
+	 */
+	public void updateRotation(){
+		this.rotation += (double)(this.direction)/2;
+	}
+	
 	/**
 	 * moves the car in the direction of its rotation
 	 * @param speed
-	 * @param rotation
+	 * @param rotation2
 	 */
-	public void move(double speed, int rotation){
+	public void move(double speed, double rotation){
+		
+		this.updateRotation();
+		
+		rotation = rotation%360;
+
 		
 		//first quadrant of rotation
-		if(rotation <= Math.PI*0.5){
-			x += (int) (Math.sin(rotation)*speed);
-			y += (int) (Math.cos(rotation)*speed);
+		if(rotation <= 90){
+			x += (int) (Math.sin(Math.toRadians(rotation))*speed);
+			y -= (int) (Math.cos(Math.toRadians(rotation))*speed);
 			
 		//second quadrant of rotation
-		}else if(Math.PI*0.5 < rotation && rotation <= Math.PI){
-			x += (int) (Math.cos(rotation - Math.PI*0.5)*speed);
-			y -= (int) (Math.sin(rotation - Math.PI*0.5)*speed);
+		}else if(90 < rotation && rotation <= 180){
+			x += (int) (Math.cos(Math.toRadians(rotation - 90))*speed);
+			y += (int) (Math.sin(Math.toRadians(rotation - 90))*speed);
 			
 		//third quadrant of rotation
-		}else if(Math.PI < rotation && rotation <= Math.PI*1.5){
-			x -= (int) (Math.sin(rotation - Math.PI)*speed);
-			y -= (int) (Math.cos(rotation - Math.PI)*speed);
+		}else if(180 < rotation && rotation <= 270){
+			x -= (int) (Math.sin(Math.toRadians(rotation - 180))*speed);
+			y += (int) (Math.cos(Math.toRadians(rotation - 180))*speed);
 		//fourth and last quadrant of rotation
-		}else if(Math.PI*1.5 < rotation && rotation <= Math.PI*2){
-			x -= (int) (Math.cos(rotation - Math.PI*1.5)*speed);
-			y += (int) (Math.sin(rotation - Math.PI*1.5)*speed);
+		}else if(270 < rotation && rotation <= 360){
+			x -= (int) (Math.cos(Math.toRadians(rotation - 270))*speed);
+			y -= (int) (Math.sin(Math.toRadians(rotation - 270))*speed);
 		}
 		
+		
+		
+		
+	}
+	
+	public void update(){
+		this.toggleAcceleration();
+		this.setNewSpeed();
+		this.steer((byte)1);
 	}
 
 	public void draw(Graphics2D g, float scale, double xOffset, double yOffset) {
-		// TODO Auto-generated method stub
-		
+		this.move(this.speed/30, rotation);
+		frame.draw(g, scale, xOffset, yOffset);
 	}
 
 }

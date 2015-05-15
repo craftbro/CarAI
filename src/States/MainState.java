@@ -62,7 +62,7 @@ public class MainState extends GameState{
 	
 	@Override
 	public void update() {
-	
+		world.update();
 	}
 
 }

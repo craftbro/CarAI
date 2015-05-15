@@ -44,6 +44,11 @@ public class World {
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 	}
 	
+	
+	public void update(){
+		for(Car c : cars) c.update();
+	}
+	
 	/**
 	 * Draws to worldImage
 	 */
@@ -58,13 +63,7 @@ public class World {
 		}
 	
 		
-		try{
-			BufferedImage car = ImageLoader.loadImage("car.png");
-			int sizeW = (int) (car.getWidth()/(50/scale));
-			int sizeH = (int) (car.getHeight()/(50/scale));
-			g.drawImage(car, (int)(((WIDTH/2)-(sizeW/2))+xOffset), (int)(((HEIGHT/2)-(sizeH/2))+yOffset), sizeW, sizeH, null);
-		}
-		catch(Exception e){ System.out.println("boe");}
+	
 		
 		return worldImage;
 	}
