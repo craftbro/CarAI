@@ -32,6 +32,7 @@ public class Car {
 	double wheelFrictionForce = wheelFriction*gravityPull;
 	
 	//maximum speed on current road
+	//under speed limit of 35 it won't drive, it stops or never starts
 	int currentSpeedLimit = 35;
 	boolean isUnderSpeedLimit = true;
 	boolean keepsToSpeedLimit = true;
