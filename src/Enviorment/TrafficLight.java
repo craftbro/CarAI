@@ -4,7 +4,9 @@ public class TrafficLight {
 	
 	TrafficLightColours currentTrafficLightColour = TrafficLightColours.RED;
 	int counter =  -1;
-	
+	/**
+	 * toggle the trafficLights
+	 */
 	public void toggleTrafficLight(){
 		
 		switch (currentTrafficLightColour) {
@@ -23,7 +25,9 @@ public class TrafficLight {
 		}
 		
 	}
-	
+	/**
+	 * updates the counter so it goes through a cycle
+	 */
 	public void counterUpdate(){
 		if(counter > 0){
 			counter -= 1;
@@ -32,11 +36,15 @@ public class TrafficLight {
 			counter -= 1;
 		}
 	}
-	
+	/**
+	 * @return currentTrafficLightColour
+	 */
 	public TrafficLightColours getColour(){
 		return  currentTrafficLightColour;
 	}
-	
+	/**
+	 * updates the trafficLight
+	 */
 	public void update(){
 		this.counterUpdate();
 	}
