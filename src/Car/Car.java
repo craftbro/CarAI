@@ -118,11 +118,8 @@ public class Car {
 	public void update(){
 		this.toggleAcceleration();
 		this.setNewSpeed();
-		if(rotation != 145){
-			this.steer((byte)1);
-		}else{
-			this.steer((byte)0);
-		}
+		this.steer((byte)1);
+		
 	}
 
 	public void draw(Graphics2D g, float scale, double xOffset, double yOffset) {
