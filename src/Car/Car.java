@@ -31,8 +31,10 @@ public class Car {
 	double wheelFriction = r.nextDouble()*0.025+0.01;
 	double wheelFrictionForce = wheelFriction*gravityPull;
 	
-	//maximum speed on current road: Not used yet
-	int currentMaxSpeed = 120;
+	//maximum speed on current road
+	int currentSpeedLimit = 35;
+	boolean isUnderSpeedLimit = true;
+	boolean keepsToSpeedLimit = true;
 	
 	//The object used for drawing the car with the right rotation
 	CarFrame frame;
@@ -56,12 +58,17 @@ public class Car {
 	//to add the acceleration up to the speed
 	public void setNewSpeed(){
 		this.speed += acceleration();
+		isUnderSpeedLimit = speed <= currentSpeedLimit;
 	}
 	/**
 	 * toggle the acceleration
 	 */
 	public void toggleAcceleration(){
-		standardAcceleration = standardAcceleration == 0? maxAcceleration: 0;
+		if(!isUnderSpeedLimit && keepsToSpeedLimit){
+			standardAcceleration = 0;
+		}else{
+			standardAcceleration = standardAcceleration == 0? maxAcceleration: 0;
+		}
 	}
 	public void breaks(){
 		if(speed - 30 < 0){
