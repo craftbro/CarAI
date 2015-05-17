@@ -11,8 +11,8 @@ public class Car {
 	Random r = new Random();
 
 	//position
-	int x = 600;
-	int y = 600;
+	double x = 600;
+	double y = 600;
 	
 	//moving
 	double rotation = 0;
@@ -32,8 +32,7 @@ public class Car {
 	double wheelFrictionForce = wheelFriction*gravityPull;
 	
 	//maximum speed on current road
-	//under speed limit of 35 it won't drive, it stops or never starts
-	int currentSpeedLimit = 35;
+	int currentSpeedLimit = 120;
 	boolean isUnderSpeedLimit = true;
 	boolean keepsToSpeedLimit = true;
 	
@@ -49,9 +48,9 @@ public class Car {
 		return 0.5*1.2922*this.speed*this.speed*this.cwValue*this.frontArea;
 	}
 	//calculate the acceleration: wheelFrictionForce is changed to prevent negative speed
-	public int acceleration(){
-		double F = ((this.mass*this.standardAcceleration) - dragForce()) - wheelFrictionForce*speed/120;
-		return (int) (F/this.mass);
+	public double acceleration(){
+		double F = ((this.mass*this.standardAcceleration) - dragForce()) - wheelFrictionForce*(speed > 0? 1 : 0);
+		return F/this.mass;
 	}
 	/**
 	 * sets the new speed
@@ -104,21 +103,12 @@ public class Car {
 	 */
 	public void move(double speed, double rotation){
 		
+		Point oldPos = new Point((int)x, (int)y);
 		
-
-		int addX = 0;
-		int addY = 0;
+		x +=  Math.sin(Math.toRadians(rotation))*speed;
+		y += -Math.cos(Math.toRadians(rotation))*speed;
 		
-	
-		addX = (int) Math.round((Math.sin(Math.toRadians(rotation))*speed));
-		addY = -(int) Math.round((Math.cos(Math.toRadians(rotation))*speed));
-		
-		Point oldPos = new Point(x, y);
-		
-		x += addX;
-		y += addY;
-		
-		Point newPos = new Point(x, y);
+		Point newPos = new Point((int)x, (int)y);
 
 		this.updateRotation(oldPos.distance(newPos));
 	}
