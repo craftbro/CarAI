@@ -11,8 +11,8 @@ public class Car {
 	Random r = new Random();
 
 	//position
-	int x = 600;
-	int y = 600;
+	double x = 600;
+	double y = 600;
 	
 	//moving
 	double rotation = 0;
@@ -31,8 +31,10 @@ public class Car {
 	double wheelFriction = r.nextDouble()*0.025+0.01;
 	double wheelFrictionForce = wheelFriction*gravityPull;
 	
-	//maximum speed on current road: Not used yet
-	int currentMaxSpeed = 120;
+	//maximum speed on current road
+	int currentSpeedLimit = 120;
+	boolean isUnderSpeedLimit = true;
+	boolean keepsToSpeedLimit = true;
 	
 	//The object used for drawing the car with the right rotation
 	CarFrame frame;
@@ -46,9 +48,9 @@ public class Car {
 		return 0.5*1.2922*this.speed*this.speed*this.cwValue*this.frontArea;
 	}
 	//calculate the acceleration: wheelFrictionForce is changed to prevent negative speed
-	public int acceleration(){
-		double F = ((this.mass*this.standardAcceleration) - dragForce()) - wheelFrictionForce*speed/120;
-		return (int) (F/this.mass);
+	public double acceleration(){
+		double F = ((this.mass*this.standardAcceleration) - dragForce()) - wheelFrictionForce*(speed > 0? 1 : 0);
+		return F/this.mass;
 	}
 	/**
 	 * sets the new speed
@@ -56,12 +58,17 @@ public class Car {
 	//to add the acceleration up to the speed
 	public void setNewSpeed(){
 		this.speed += acceleration();
+		isUnderSpeedLimit = speed <= currentSpeedLimit;
 	}
 	/**
 	 * toggle the acceleration
 	 */
 	public void toggleAcceleration(){
-		standardAcceleration = standardAcceleration == 0? maxAcceleration: 0;
+		if(!isUnderSpeedLimit && keepsToSpeedLimit){
+			standardAcceleration = 0;
+		}else{
+			standardAcceleration = standardAcceleration == 0? maxAcceleration: 0;
+		}
 	}
 	public void breaks(){
 		if(speed - 30 < 0){
@@ -96,21 +103,12 @@ public class Car {
 	 */
 	public void move(double speed, double rotation){
 		
+		Point oldPos = new Point((int)x, (int)y);
 		
-
-		int addX = 0;
-		int addY = 0;
+		x +=  Math.sin(Math.toRadians(rotation))*speed;
+		y += -Math.cos(Math.toRadians(rotation))*speed;
 		
-	
-		addX = (int) Math.round((Math.sin(Math.toRadians(rotation))*speed));
-		addY = -(int) Math.round((Math.cos(Math.toRadians(rotation))*speed));
-		
-		Point oldPos = new Point(x, y);
-		
-		x += addX;
-		y += addY;
-		
-		Point newPos = new Point(x, y);
+		Point newPos = new Point((int)x, (int)y);
 
 		this.updateRotation(oldPos.distance(newPos));
 	}
@@ -118,11 +116,8 @@ public class Car {
 	public void update(){
 		this.toggleAcceleration();
 		this.setNewSpeed();
-		if(rotation != 145){
-			this.steer((byte)1);
-		}else{
-			this.steer((byte)0);
-		}
+		this.steer((byte)1);
+		
 	}
 
 	public void draw(Graphics2D g, float scale, double xOffset, double yOffset) {
