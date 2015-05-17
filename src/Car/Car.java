@@ -61,7 +61,6 @@ public class Car {
 	public void setNewSpeed(){
 		this.speed += acceleration();
 		isUnderSpeedLimit = speed <= currentSpeedLimit;
-		System.out.println(speed + " "  + isUnderSpeedLimit);
 	}
 	/**
 	 * toggle the acceleration
