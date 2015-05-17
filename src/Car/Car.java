@@ -9,7 +9,9 @@ import java.util.Random;
  */
 public class Car {
 	Random r = new Random();
-
+	
+	boolean doBreak = false;
+	
 	//position
 	double x = 600;
 	double y = 600;
@@ -20,7 +22,7 @@ public class Car {
 	double speed = 0;
 	
 	//Acceleration
-	double maxAcceleration = r.nextDouble()+1*10;
+	double maxAcceleration = r.nextDouble()+1*20;
 	double standardAcceleration = 0;
 	
 	//Friction values: drag, and wheel friction
@@ -50,7 +52,7 @@ public class Car {
 	//calculate the acceleration: wheelFrictionForce is changed to prevent negative speed
 	public double acceleration(){
 		double F = ((this.mass*this.standardAcceleration) - dragForce()) - wheelFrictionForce*(speed > 0? 1 : 0);
-		return F/this.mass;
+		return (F/this.mass)/60;
 	}
 	/**
 	 * sets the new speed
@@ -59,22 +61,29 @@ public class Car {
 	public void setNewSpeed(){
 		this.speed += acceleration();
 		isUnderSpeedLimit = speed <= currentSpeedLimit;
+		System.out.println(speed + " "  + isUnderSpeedLimit);
 	}
 	/**
 	 * toggle the acceleration
 	 */
 	public void toggleAcceleration(){
-		if(!isUnderSpeedLimit && keepsToSpeedLimit){
+		if((!isUnderSpeedLimit) && keepsToSpeedLimit){
 			standardAcceleration = 0;
+			doBreak = true;
 		}else{
-			standardAcceleration = standardAcceleration == 0? maxAcceleration: 0;
+			//test the breaks
+			if (doBreak){
+				breaks();
+			}else{
+			standardAcceleration = isUnderSpeedLimit? maxAcceleration: 0;
+			}
 		}
 	}
 	public void breaks(){
-		if(speed - 30 < 0){
+		if(speed - 1 < 0){
 			speed = 0;
 		}else{
-			speed -= 30;
+			speed -= 0.5;
 		}
 	}
 	/**
