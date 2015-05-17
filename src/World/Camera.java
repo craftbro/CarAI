@@ -72,8 +72,8 @@ public class Camera {
 	
 	public Point getRelativePointerLocation(){
 		Point p = Mouse.getMouseLocation();
-		int x = (int) ((xOffset+p.getX())/(scale));
-		int y = (int) ((yOffset+p.getY())/(scale));
+		int x = (int) (p.getX()/scale);
+		int y = (int) (p.getY()/scale);
 		return new Point(x, y);
 	}
 	
@@ -111,22 +111,21 @@ public class Camera {
 		//Check if the user has scrolled. If so, zoom in
 		double scroll = Mouse.getScrollPosition();
 		if(scroll != currentWheelRotation){
-			double xAdd = this.getRelativePointerLocation().getX();
-			double yAdd = this.getRelativePointerLocation().getY();
 			
-			if(scroll > currentWheelRotation){
-				xAdd = -xAdd;
-				yAdd = -yAdd;
-			}
-			
-			xOffset += xAdd;
-			yOffset += yAdd;
+			Point p = this.getRelativePointerLocation();
 			
 			int scrollDiff = (int) (scroll - currentWheelRotation);
 			scrollDiff = scrollDiff>0?1:-1;
 			targetScale-=(.75*scrollDiff);
-			scale-=(.25*scrollDiff);
+			scale-=(1*scrollDiff);
 			currentWheelRotation = scroll;
+	
+			double newWidth = MainClass.WIDTH/scale;
+			double newHeight = MainClass.HEIGHT/scale;
+			
+			
+			xOffset = -((p.getX())-(newWidth/2));
+			yOffset = -((p.getY())-(newHeight/2));
 			
 			
 		}

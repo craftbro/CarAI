@@ -27,10 +27,10 @@ public class MainState extends GameState{
 	public void draw(Graphics2D g) {
 		BufferedImage img = world.draw(camera.getScale(), camera.getXOffset(), camera.getYOffset());
 		g.drawImage(img, 0, 0, img.getWidth(), img.getHeight(), null);
-//		g.setColor(Color.red);
-//		g.fillOval((int)camera.getRelativePointerLocation().getX()-25, (int)camera.getRelativePointerLocation().getY()-25, 50, 50);
-//		String s = camera.getXOffset()+", "+camera.getYOffset()+", "+camera.getScale();
-//		g.drawString(s, 100, 100);
+		g.setColor(Color.red);
+		//g.fillOval((int)Math.round((camera.getRelativePointerLocation().getX()*camera.getScale())-25), (int)Math.round((camera.getRelativePointerLocation().getY()*camera.getScale())-25), 50, 50);
+		String s = camera.getXOffset()+", "+camera.getYOffset()+", "+camera.getScale();
+		g.drawString(s, 100, 100);
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class MainState extends GameState{
 	@Override
 	public void update() {
 		world.update();
-		camera.update();
+		//camera.update();
 	}
 
 }
